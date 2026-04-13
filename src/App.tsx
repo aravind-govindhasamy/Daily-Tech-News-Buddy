@@ -7,6 +7,11 @@ import { useState, useEffect } from 'react';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from './components/AppSidebar';
 import { Feed } from './pages/Feed';
+import { MoneyFeed } from './pages/MoneyFeed';
+import { CyberCrimeFeed } from './pages/CyberCrimeFeed';
+import { DealsFeed } from './pages/DealsFeed';
+import { CompetitionsFeed } from './pages/CompetitionsFeed';
+import { GovtSchemesFeed } from './pages/GovtSchemesFeed';
 import { GeneratedPosts } from './pages/GeneratedPosts';
 import { ScheduledQueue } from './pages/ScheduledQueue';
 import { AIChat } from './pages/AIChat';
@@ -77,6 +82,16 @@ export default function App() {
     switch (currentTab) {
       case 'feed':
         return <Feed onPostGenerated={handlePostGenerated} />;
+      case 'money':
+        return <MoneyFeed onPostGenerated={handlePostGenerated} />;
+      case 'cyber':
+        return <CyberCrimeFeed onPostGenerated={handlePostGenerated} />;
+      case 'deals':
+        return <DealsFeed onPostGenerated={handlePostGenerated} />;
+      case 'competitions':
+        return <CompetitionsFeed onPostGenerated={handlePostGenerated} />;
+      case 'schemes':
+        return <GovtSchemesFeed onPostGenerated={handlePostGenerated} />;
       case 'generated':
         return (
           <GeneratedPosts 

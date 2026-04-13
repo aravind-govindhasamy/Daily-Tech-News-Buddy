@@ -4,7 +4,12 @@ import {
   Calendar, 
   MessageSquare, 
   Settings,
-  Zap
+  Zap,
+  TrendingUp,
+  ShieldAlert,
+  Tag,
+  Trophy,
+  Landmark
 } from "lucide-react";
 import {
   Sidebar,
@@ -23,6 +28,31 @@ const items = [
     title: "Daily Feed",
     url: "feed",
     icon: LayoutDashboard,
+  },
+  {
+    title: "Make & Save Money",
+    url: "money",
+    icon: TrendingUp,
+  },
+  {
+    title: "Cyber Crime",
+    url: "cyber",
+    icon: ShieldAlert,
+  },
+  {
+    title: "Deals & Giveaways",
+    url: "deals",
+    icon: Tag,
+  },
+  {
+    title: "Hackathons & Comps",
+    url: "competitions",
+    icon: Trophy,
+  },
+  {
+    title: "Govt Schemes",
+    url: "schemes",
+    icon: Landmark,
   },
   {
     title: "Generated Posts",
@@ -64,6 +94,7 @@ export function AppSidebar({ currentTab, onTabChange }: AppSidebarProps) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     render={<div />}
+                    nativeButton={false}
                     isActive={currentTab === item.url}
                     onClick={() => onTabChange(item.url)}
                     className="cursor-pointer"
