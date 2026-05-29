@@ -10,7 +10,10 @@ import {
   Share2, 
   Calendar, 
   Trash2,
-  CheckCircle2
+  CheckCircle2,
+  Sparkles,
+  Loader2,
+  ExternalLink
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'motion/react';
@@ -25,17 +28,27 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
+import { geminiService } from '../services/geminiService';
 
 interface GeneratedPostsProps {
   posts: GeneratedPost[];
   onDelete: (id: string) => void;
   onSchedule: (scheduled: ScheduledPost) => void;
+  onUpdatePost: (id: string, newContent: Partial<GeneratedPost>) => void;
 }
 
-export function GeneratedPosts({ posts, onDelete, onSchedule }: GeneratedPostsProps) {
+export function GeneratedPosts({ posts, onDelete, onSchedule, onUpdatePost }: GeneratedPostsProps) {
   const [scheduleDate, setScheduleDate] = useState('');
   const [scheduleTime, setScheduleTime] = useState('');
   const [selectedPost, setSelectedPost] = useState<{ post: GeneratedPost, platform: 'linkedin' | 'twitter' } | null>(null);
+  const [enhancingId, setEnhancingId] = useState<string | null>(null);
+
+  const handleGenerateImage = (post: GeneratedPost) => {
+    if (!post.imagePrompt) return;
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(post.imagePrompt)}?width=1024&height=1024&nologo=true`;
+    onUpdatePost(post.id, { imageUrl });
+    toast.success("Image generated successfully!");
+  };
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -70,6 +83,22 @@ export function GeneratedPosts({ posts, onDelete, onSchedule }: GeneratedPostsPr
     setSelectedPost(null);
     setScheduleDate('');
     setScheduleTime('');
+  };
+
+  const handleEnhanceLinkedIn = async (post: GeneratedPost) => {
+    setEnhancingId(post.id);
+    try {
+      const enhancedContent = await geminiService.enhanceLinkedInPost(post.linkedin);
+      onUpdatePost(post.id, { 
+        linkedin: enhancedContent,
+        originalLinkedin: post.originalLinkedin || post.linkedin
+      });
+      toast.success("LinkedIn post enhanced!");
+    } catch(err) {
+      toast.error("Failed to enhance post");
+    } finally {
+      setEnhancingId(null);
+    }
   };
 
   if (posts.length === 0) {
@@ -109,6 +138,14 @@ export function GeneratedPosts({ posts, onDelete, onSchedule }: GeneratedPostsPr
                     <CardTitle className="text-xl">{post.newsTitle}</CardTitle>
                     <CardDescription>
                       Generated on {new Date(post.createdAt).toLocaleDateString()} • Tone: <Badge variant="outline" className="capitalize">{post.tone}</Badge>
+                      {post.newsUrl && (
+                        <>
+                          {' '}•{' '}
+                          <a href={post.newsUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline inline-flex items-center">
+                            Original Article <ExternalLink className="ml-1 w-3 h-3" />
+                          </a>
+                        </>
+                      )}
                     </CardDescription>
                   </div>
                   <Button variant="ghost" size="icon" onClick={() => onDelete(post.id)}>
@@ -127,15 +164,36 @@ export function GeneratedPosts({ posts, onDelete, onSchedule }: GeneratedPostsPr
                     </TabsList>
                     
                     <TabsContent value="linkedin" className="space-y-4">
-                      <div className="p-4 bg-muted rounded-lg whitespace-pre-wrap text-sm leading-relaxed">
+                      {post.originalLinkedin && (
+                        <div className="mb-2">
+                          <Badge variant="default" className="bg-gradient-to-r from-blue-600 to-indigo-600">
+                            <Sparkles className="w-3 h-3 mr-1" /> Enhanced by AI
+                          </Badge>
+                        </div>
+                      )}
+                      <div className="p-4 bg-muted rounded-lg whitespace-pre-wrap text-sm leading-relaxed relative">
                         {post.linkedin}
                       </div>
-                      <div className="flex flex-wrap gap-2">
+                      {post.originalLinkedin && (
+                        <details className="text-sm mt-2">
+                          <summary className="text-muted-foreground cursor-pointer hover:text-foreground inline-flex items-center">
+                            View Original Content
+                          </summary>
+                          <div className="mt-2 p-3 bg-muted/50 rounded-md border text-xs text-muted-foreground whitespace-pre-wrap">
+                            {post.originalLinkedin}
+                          </div>
+                        </details>
+                      )}
+                      <div className="flex flex-wrap gap-2 pt-2">
                         <Button variant="outline" size="sm" onClick={() => handleCopy(post.linkedin)}>
-                          <Copy className="w-4 h-4 mr-2" /> Copy
+                          <Copy className="w-4 h-4 mr-2" /> Copy to Clipboard
                         </Button>
                         <Button variant="outline" size="sm" onClick={() => handleShare('linkedin', post)}>
                           <Share2 className="w-4 h-4 mr-2" /> Share Now
+                        </Button>
+                        <Button variant="secondary" size="sm" onClick={() => handleEnhanceLinkedIn(post)} disabled={enhancingId === post.id}>
+                          {enhancingId === post.id ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Sparkles className="w-4 h-4 mr-2" />}
+                          {enhancingId === post.id ? 'Enhancing...' : 'Enhance Post'}
                         </Button>
                         <Dialog>
                           <DialogTrigger render={<Button variant="outline" size="sm" onClick={() => setSelectedPost({ post, platform: 'linkedin' })} />}>
@@ -161,15 +219,46 @@ export function GeneratedPosts({ posts, onDelete, onSchedule }: GeneratedPostsPr
                           </DialogContent>
                         </Dialog>
                       </div>
+                      
+                      <div className="mt-6 pt-4 border-t">
+                        <h4 className="text-sm font-semibold mb-3">Generated Image Concept (LinkedIn)</h4>
+                        {post.imageUrl ? (
+                          <>
+                            <img 
+                              src={post.imageUrl} 
+                              alt="AI generated poster for post" 
+                              referrerPolicy="no-referrer"
+                              className="w-full max-w-sm rounded-lg shadow-sm border"
+                            />
+                            {post.imagePrompt && (
+                              <p className="text-xs text-muted-foreground mt-2 italic max-w-sm">
+                                Prompt: {post.imagePrompt}
+                              </p>
+                            )}
+                          </>
+                        ) : post.imagePrompt ? (
+                          <div className="w-full max-w-sm h-64 bg-muted rounded-lg border border-dashed flex items-center justify-center text-muted-foreground flex-col gap-3">
+                            <Sparkles className="w-8 h-8 opacity-50" />
+                            <span className="text-sm text-center px-4">Prompt: {post.imagePrompt}</span>
+                            <Button variant="outline" size="sm" onClick={() => handleGenerateImage(post)}>
+                              Generate Image
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="w-full max-w-sm h-64 bg-muted rounded-lg border border-dashed flex items-center justify-center text-muted-foreground flex-col gap-2">
+                            <Sparkles className="w-8 h-8 opacity-50" />
+                            <span className="text-sm">No image prompt available</span>
+                          </div>
+                        )}
+                      </div>
                     </TabsContent>
-
                     <TabsContent value="twitter" className="space-y-4">
                       <div className="p-4 bg-muted rounded-lg whitespace-pre-wrap text-sm leading-relaxed">
                         {post.twitter}
                       </div>
                       <div className="flex flex-wrap gap-2">
                         <Button variant="outline" size="sm" onClick={() => handleCopy(post.twitter)}>
-                          <Copy className="w-4 h-4 mr-2" /> Copy
+                          <Copy className="w-4 h-4 mr-2" /> Copy to Clipboard
                         </Button>
                         <Button variant="outline" size="sm" onClick={() => handleShare('twitter', post)}>
                           <Share2 className="w-4 h-4 mr-2" /> Post Now
@@ -213,6 +302,38 @@ export function GeneratedPosts({ posts, onDelete, onSchedule }: GeneratedPostsPr
                           </div>
                         </div>
                       )}
+
+                      <div className="mt-6 pt-4 border-t">
+                        <h4 className="text-sm font-semibold mb-3">Generated Image Concept (Twitter)</h4>
+                        {post.imageUrl ? (
+                          <>
+                            <img 
+                              src={post.imageUrl} 
+                              alt="AI generated poster for post" 
+                              referrerPolicy="no-referrer"
+                              className="w-full max-w-sm rounded-lg shadow-sm border"
+                            />
+                            {post.imagePrompt && (
+                              <p className="text-xs text-muted-foreground mt-2 italic max-w-sm">
+                                Prompt: {post.imagePrompt}
+                              </p>
+                            )}
+                          </>
+                        ) : post.imagePrompt ? (
+                          <div className="w-full max-w-sm h-64 bg-muted rounded-lg border border-dashed flex items-center justify-center text-muted-foreground flex-col gap-3">
+                            <Sparkles className="w-8 h-8 opacity-50" />
+                            <span className="text-sm text-center px-4">Prompt: {post.imagePrompt}</span>
+                            <Button variant="outline" size="sm" onClick={() => handleGenerateImage(post)}>
+                              Generate Image
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="w-full max-w-sm h-64 bg-muted rounded-lg border border-dashed flex items-center justify-center text-muted-foreground flex-col gap-2">
+                            <Sparkles className="w-8 h-8 opacity-50" />
+                            <span className="text-sm">No image prompt available</span>
+                          </div>
+                        )}
+                      </div>
                     </TabsContent>
                   </Tabs>
                 </CardContent>

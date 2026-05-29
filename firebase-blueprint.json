@@ -1,0 +1,89 @@
+{
+  "entities": {
+    "savedPost": {
+      "type": "object",
+      "title": "Saved Post",
+      "description": "A news article saved/favorited by the user",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "ID of the user who saved the post"
+        },
+        "newsId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": ["userId", "newsId", "title", "createdAt"]
+    },
+    "readLater": {
+      "type": "object",
+      "title": "Read Later Post",
+      "description": "A news article saved to read later by the user",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "ID of the user who saved the post"
+        },
+        "newsId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": ["userId", "newsId", "title", "createdAt"]
+    },
+    "cachedFeed": {
+      "type": "object",
+      "title": "Cached Feed",
+      "description": "A pre-fetched cache of RSS feed items per category to support instant loading",
+      "properties": {
+        "categoryId": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array"
+        }
+      },
+      "required": ["categoryId", "updatedAt", "items"]
+    }
+  },
+  "firestore": {
+    "/savedPosts/{postId}": {
+      "schema": "savedPost",
+      "description": "User's saved news articles"
+    },
+    "/readLater/{postId}": {
+      "schema": "readLater",
+      "description": "User's read later news articles"
+    },
+    "/cachedFeeds/{categoryId}": {
+      "schema": "cachedFeed",
+      "description": "Pre-fetched active feed items for RSS performance"
+    }
+  }
+}

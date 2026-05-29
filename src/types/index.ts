@@ -14,9 +14,13 @@ export interface GeneratedPost {
   id: string;
   newsId: string;
   newsTitle: string;
+  newsUrl?: string;
   linkedin: string;
+  originalLinkedin?: string;
   twitter: string;
   thread?: string[];
+  imagePrompt?: string;
+  imageUrl?: string;
   tone: PostTone;
   createdAt: string;
 }

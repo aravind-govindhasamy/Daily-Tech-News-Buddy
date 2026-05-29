@@ -9,7 +9,16 @@ import {
   ShieldAlert,
   Tag,
   Trophy,
-  Landmark
+  Landmark,
+  Cpu,
+  Rocket,
+  Code,
+  Bot,
+  LogIn,
+  LogOut,
+  Clock,
+  Briefcase,
+  EyeOff
 } from "lucide-react";
 import {
   Sidebar,
@@ -21,7 +30,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarFooter
 } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "./FirebaseProvider";
 
 const items = [
   {
@@ -35,9 +47,19 @@ const items = [
     icon: TrendingUp,
   },
   {
+    title: "Corporate & Career",
+    url: "corporate",
+    icon: Briefcase,
+  },
+  {
     title: "Cyber Crime",
     url: "cyber",
     icon: ShieldAlert,
+  },
+  {
+    title: "Dark Web & Tor",
+    url: "darkweb",
+    icon: EyeOff,
   },
   {
     title: "Deals & Giveaways",
@@ -55,9 +77,39 @@ const items = [
     icon: Landmark,
   },
   {
+    title: "IoT & Electronics",
+    url: "iot",
+    icon: Cpu,
+  },
+  {
+    title: "Startups",
+    url: "startup",
+    icon: Rocket,
+  },
+  {
+    title: "Open Source",
+    url: "opensource",
+    icon: Code,
+  },
+  {
+    title: "AI in Enterprise",
+    url: "ai_enterprise",
+    icon: Bot,
+  },
+  {
     title: "Generated Posts",
     url: "generated",
     icon: FileText,
+  },
+  {
+    title: "Saved Posts",
+    url: "saved",
+    icon: FileText,
+  },
+  {
+    title: "Read Later",
+    url: "readlater",
+    icon: Clock,
   },
   {
     title: "Scheduled Queue",
@@ -77,6 +129,8 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ currentTab, onTabChange }: AppSidebarProps) {
+  const { user, loading, signIn, logOut } = useAuth();
+  
   return (
     <Sidebar>
       <SidebarHeader className="p-4 border-b">
@@ -93,8 +147,6 @@ export function AppSidebar({ currentTab, onTabChange }: AppSidebarProps) {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
-                    render={<div />}
-                    nativeButton={false}
                     isActive={currentTab === item.url}
                     onClick={() => onTabChange(item.url)}
                     className="cursor-pointer"
@@ -110,6 +162,27 @@ export function AppSidebar({ currentTab, onTabChange }: AppSidebarProps) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter className="p-4 border-t">
+        {loading ? null : user ? (
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2 text-sm px-2 mb-2">
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden">
+                {user.photoURL ? <img src={user.photoURL} alt="User" /> : <span className="font-bold text-primary">{user.email?.charAt(0).toUpperCase()}</span>}
+              </div>
+              <div className="flex-1 truncate truncate text-xs">
+                 {user.email}
+              </div>
+            </div>
+            <Button variant="outline" className="w-full justify-start" onClick={logOut}>
+              <LogOut className="w-4 h-4 mr-2" /> Sign Out
+            </Button>
+          </div>
+        ) : (
+          <Button variant="default" className="w-full justify-start" onClick={signIn}>
+            <LogIn className="w-4 h-4 mr-2" /> Sign In with Google
+          </Button>
+        )}
+      </SidebarFooter>
     </Sidebar>
   );
 }

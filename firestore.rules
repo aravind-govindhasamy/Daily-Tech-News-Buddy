@@ -1,0 +1,72 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidSavedPost(data) {
+      return data.keys().hasAll(['userId', 'newsId', 'title', 'createdAt']) &&
+             data.userId is string && data.userId == request.auth.uid &&
+             data.newsId is string && data.newsId.size() > 0 && data.newsId.size() <= 200 &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 500 &&
+             data.createdAt == request.time;
+    }
+
+    function isValidReadLaterPost(data) {
+      return data.keys().hasAll(['userId', 'newsId', 'title', 'createdAt']) &&
+             data.userId is string && data.userId == request.auth.uid &&
+             data.newsId is string && data.newsId.size() > 0 && data.newsId.size() <= 200 &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 500 &&
+             data.createdAt == request.time;
+    }
+
+    function isValidCachedFeed(data) {
+      return data.keys().hasAll(['categoryId', 'updatedAt', 'items']) &&
+             data.categoryId is string && data.categoryId.size() > 0 && data.categoryId.size() <= 128 &&
+             data.updatedAt is string && data.updatedAt.size() > 0 && data.updatedAt.size() <= 64 &&
+             data.items is list && data.items.size() <= 50;
+    }
+
+    match /savedPosts/{postId} {
+      allow read: if isOwner(existing().userId);
+      allow create: if isSignedIn() && isValidId(postId) && isValidSavedPost(incoming());
+      allow delete: if isOwner(existing().userId);
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      // updates are not allowed for simply saving an item (immutable)
+    }
+
+    match /readLater/{postId} {
+      allow read: if isOwner(existing().userId);
+      allow create: if isSignedIn() && isValidId(postId) && isValidReadLaterPost(incoming());
+      allow delete: if isOwner(existing().userId);
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      // updates are not allowed (immutable)
+    }
+
+    match /cachedFeeds/{categoryId} {
+      allow read: if true;
+      allow create, update: if isSignedIn() && isValidId(categoryId) && isValidCachedFeed(incoming());
+    }
+  }
+}
