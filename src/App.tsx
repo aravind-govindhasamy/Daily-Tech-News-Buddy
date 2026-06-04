@@ -18,11 +18,13 @@ import { StartupFeed } from './pages/StartupFeed';
 import { OpenSourceFeed } from './pages/OpenSourceFeed';
 import { AiEnterpriseFeed } from './pages/AiEnterpriseFeed';
 import { CorporateFeed } from './pages/CorporateFeed';
+import { InterestHub } from './pages/InterestHub';
 import { GeneratedPosts } from './pages/GeneratedPosts';
 import { ScheduledQueue } from './pages/ScheduledQueue';
 import { SavedNews } from './pages/SavedNews';
 import { ReadLater } from './pages/ReadLater';
 import { AIChat } from './pages/AIChat';
+import { ResourceHub } from './pages/ResourceHub';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { GeneratedPost, ScheduledPost } from './types';
 import { Toaster } from '@/components/ui/sonner';
@@ -141,6 +143,21 @@ export default function App() {
     switch (currentTab) {
       case 'feed':
         return <Feed onPostGenerated={handlePostGenerated} />;
+      case 'community':
+      case 'community_marvel':
+        return <InterestHub initialCircleTab="marvel" onPostGenerated={handlePostGenerated} />;
+      case 'community_riders':
+        return <InterestHub initialCircleTab="riders" onPostGenerated={handlePostGenerated} />;
+      case 'community_travel':
+        return <InterestHub initialCircleTab="travel" onPostGenerated={handlePostGenerated} />;
+      case 'community_ngo':
+        return <InterestHub initialCircleTab="ngo" onPostGenerated={handlePostGenerated} />;
+      case 'community_volunteering':
+        return <InterestHub initialCircleTab="volunteering" onPostGenerated={handlePostGenerated} />;
+      case 'community_local':
+        return <InterestHub initialCircleTab="local" onPostGenerated={handlePostGenerated} />;
+      case 'resources':
+        return <ResourceHub />;
       case 'money':
         return <MoneyFeed onPostGenerated={handlePostGenerated} />;
       case 'corporate':

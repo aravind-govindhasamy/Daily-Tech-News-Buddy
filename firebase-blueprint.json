@@ -70,6 +70,74 @@
         }
       },
       "required": ["categoryId", "updatedAt", "items"]
+    },
+    "savedJob": {
+      "type": "object",
+      "title": "Saved Job",
+      "description": "A remote job listing saved by the user",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "ID of the user who saved the job"
+        },
+        "jobId": {
+          "type": "string",
+          "description": "The unique remote job listing ID"
+        },
+        "title": {
+          "type": "string"
+        },
+        "company_name": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "candidate_required_location": {
+          "type": "string"
+        },
+        "salary": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": ["userId", "jobId", "title", "url", "createdAt"]
+    },
+    "customFeed": {
+      "type": "object",
+      "title": "Custom RSS Feed",
+      "description": "A user-added custom RSS feed source URL",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "ID of the user who configured this feed"
+        },
+        "feedId": {
+          "type": "string",
+          "description": "The unique resource ID for this custom feed"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": ["userId", "feedId", "name", "url", "category", "createdAt"]
     }
   },
   "firestore": {
@@ -84,6 +152,14 @@
     "/cachedFeeds/{categoryId}": {
       "schema": "cachedFeed",
       "description": "Pre-fetched active feed items for RSS performance"
+    },
+    "/savedJobs/{jobId}": {
+      "schema": "savedJob",
+      "description": "User's saved remote job listings"
+    },
+    "/customFeeds/{feedId}": {
+      "schema": "customFeed",
+      "description": "User-configured custom RSS news sources"
     }
   }
 }

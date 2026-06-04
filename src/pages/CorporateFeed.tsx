@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { SharedFeed } from '../components/SharedFeed';
 import { newsService } from '../services/newsService';
 import { GeneratedPost } from '../types';
-import { Briefcase, Calculator, Newspaper } from 'lucide-react';
+import { Briefcase, Calculator, Newspaper, Globe } from 'lucide-react';
 import { SalaryCalculator } from '../components/SalaryCalculator';
+import { RemoteJobsExplorer } from '../components/RemoteJobsExplorer';
 import { Button } from '@/components/ui/button';
 
 export function CorporateFeed({ onPostGenerated }: { onPostGenerated: (post: GeneratedPost) => void }) {
-  const [activeSubTab, setActiveSubTab] = useState<'feed' | 'calculator'>('feed');
+  const [activeSubTab, setActiveSubTab] = useState<'feed' | 'calculator' | 'jobs'>('feed');
 
   return (
     <div className="space-y-6">
@@ -31,6 +32,15 @@ export function CorporateFeed({ onPostGenerated }: { onPostGenerated: (post: Gen
             <Calculator className="w-3.5 h-3.5" />
             <span>Salary & Increment Estimator</span>
           </Button>
+          <Button
+            variant={activeSubTab === 'jobs' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setActiveSubTab('jobs')}
+            className="flex items-center gap-1.5 text-xs h-8"
+          >
+            <Globe className="w-3.5 h-3.5" />
+            <span>High-Salary Remote Jobs</span>
+          </Button>
         </div>
       </div>
 
@@ -46,8 +56,10 @@ export function CorporateFeed({ onPostGenerated }: { onPostGenerated: (post: Gen
             buttonClass="bg-emerald-600 hover:bg-emerald-700 text-white"
             cardClass="border-emerald-500/20"
           />
-        ) : (
+        ) : activeSubTab === 'calculator' ? (
           <SalaryCalculator />
+        ) : (
+          <RemoteJobsExplorer />
         )}
       </div>
     </div>

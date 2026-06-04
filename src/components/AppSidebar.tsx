@@ -18,7 +18,15 @@ import {
   LogOut,
   Clock,
   Briefcase,
-  EyeOff
+  EyeOff,
+  BookOpen,
+  Users,
+  Tv,
+  Navigation,
+  Compass,
+  Heart,
+  Activity,
+  MapPin
 } from "lucide-react";
 import {
   Sidebar,
@@ -40,6 +48,16 @@ const items = [
     title: "Daily Feed",
     url: "feed",
     icon: LayoutDashboard,
+  },
+  {
+    title: "Community Social Hub",
+    url: "community",
+    icon: Users,
+  },
+  {
+    title: "Resource & Feed Hub",
+    url: "resources",
+    icon: BookOpen,
   },
   {
     title: "Make & Save Money",
@@ -123,6 +141,39 @@ const items = [
   },
 ];
 
+const communityCircles = [
+  {
+    title: "1. Marvel Universe",
+    url: "community_marvel",
+    icon: Tv,
+  },
+  {
+    title: "2. Bike Rides & Riders",
+    url: "community_riders",
+    icon: Navigation,
+  },
+  {
+    title: "3. Tourism & Travel",
+    url: "community_travel",
+    icon: Compass,
+  },
+  {
+    title: "4. NGO & Social Impact",
+    url: "community_ngo",
+    icon: Heart,
+  },
+  {
+    title: "5. Volunteer Opportunities",
+    url: "community_volunteering",
+    icon: Activity,
+  },
+  {
+    title: "6. Local Communities",
+    url: "community_local",
+    icon: MapPin,
+  },
+];
+
 interface AppSidebarProps {
   currentTab: string;
   onTabChange: (tab: string) => void;
@@ -154,6 +205,27 @@ export function AppSidebar({ currentTab, onTabChange }: AppSidebarProps) {
                     <div className="flex items-center gap-2">
                       <item.icon className="w-4 h-4" />
                       <span>{item.title}</span>
+                    </div>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup className="mt-2">
+          <SidebarGroupLabel>Community Interest Circles</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {communityCircles.map((circle) => (
+                <SidebarMenuItem key={circle.title}>
+                  <SidebarMenuButton 
+                    isActive={currentTab === circle.url}
+                    onClick={() => onTabChange(circle.url)}
+                    className="cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2">
+                      <circle.icon className="w-4 h-4 text-indigo-500/80 dark:text-indigo-400" />
+                      <span>{circle.title}</span>
                     </div>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

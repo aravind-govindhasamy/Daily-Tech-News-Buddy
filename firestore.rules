@@ -41,11 +41,35 @@ service cloud.firestore {
              data.createdAt == request.time;
     }
 
+    function isValidSavedJob(data) {
+      return data.keys().hasAll(['userId', 'jobId', 'title', 'company_name', 'category', 'candidate_required_location', 'salary', 'url', 'source', 'createdAt']) &&
+             data.userId is string && data.userId == request.auth.uid &&
+             data.jobId is string && data.jobId.size() > 0 && data.jobId.size() <= 128 &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 500 &&
+             data.company_name is string && data.company_name.size() > 0 && data.company_name.size() <= 500 &&
+             data.category is string && data.category.size() <= 200 &&
+             data.candidate_required_location is string && data.candidate_required_location.size() <= 200 &&
+             data.salary is string && data.salary.size() <= 200 &&
+             data.url is string && data.url.size() > 0 && data.url.size() <= 1000 &&
+             data.source is string && data.source.size() <= 100 &&
+             data.createdAt is string && data.createdAt.size() <= 64;
+    }
+
     function isValidCachedFeed(data) {
       return data.keys().hasAll(['categoryId', 'updatedAt', 'items']) &&
              data.categoryId is string && data.categoryId.size() > 0 && data.categoryId.size() <= 128 &&
              data.updatedAt is string && data.updatedAt.size() > 0 && data.updatedAt.size() <= 64 &&
              data.items is list && data.items.size() <= 50;
+    }
+
+    function isValidCustomFeed(data) {
+      return data.keys().hasAll(['userId', 'feedId', 'name', 'url', 'category', 'createdAt']) &&
+             data.userId is string && data.userId == request.auth.uid &&
+             data.feedId is string && data.feedId.size() > 0 && data.feedId.size() <= 128 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 200 &&
+             data.url is string && data.url.size() > 0 && data.url.size() <= 1000 &&
+             data.category is string && data.category.size() > 0 && data.category.size() <= 128 &&
+             data.createdAt is string && data.createdAt.size() <= 64;
     }
 
     match /savedPosts/{postId} {
@@ -62,6 +86,21 @@ service cloud.firestore {
       allow delete: if isOwner(existing().userId);
       allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
       // updates are not allowed (immutable)
+    }
+
+    match /savedJobs/{jobId} {
+      allow read: if isOwner(existing().userId);
+      allow create: if isSignedIn() && isValidId(jobId) && isValidSavedJob(incoming());
+      allow delete: if isOwner(existing().userId);
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      // updates are not allowed (immutable)
+    }
+
+    match /customFeeds/{feedId} {
+      allow read: if isOwner(existing().userId);
+      allow create: if isSignedIn() && isValidId(feedId) && isValidCustomFeed(incoming());
+      allow delete: if isOwner(existing().userId);
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
     }
 
     match /cachedFeeds/{categoryId} {
