@@ -16,6 +16,7 @@ import { GovtSchemesFeed } from './pages/GovtSchemesFeed';
 import { IotFeed } from './pages/IotFeed';
 import { StartupFeed } from './pages/StartupFeed';
 import { OpenSourceFeed } from './pages/OpenSourceFeed';
+import { BusinessOssFeed } from './pages/BusinessOssFeed';
 import { AiEnterpriseFeed } from './pages/AiEnterpriseFeed';
 import { CorporateFeed } from './pages/CorporateFeed';
 import { InterestHub } from './pages/InterestHub';
@@ -25,6 +26,8 @@ import { SavedNews } from './pages/SavedNews';
 import { ReadLater } from './pages/ReadLater';
 import { AIChat } from './pages/AIChat';
 import { ResourceHub } from './pages/ResourceHub';
+import { TrendsDashboard } from './pages/TrendsDashboard';
+import { DailySummary } from './pages/DailySummary';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { GeneratedPost, ScheduledPost } from './types';
 import { Toaster } from '@/components/ui/sonner';
@@ -143,6 +146,10 @@ export default function App() {
     switch (currentTab) {
       case 'feed':
         return <Feed onPostGenerated={handlePostGenerated} />;
+      case 'trends_dashboard':
+        return <TrendsDashboard />;
+      case 'daily_summary':
+        return <DailySummary />;
       case 'community':
       case 'community_marvel':
         return <InterestHub initialCircleTab="marvel" onPostGenerated={handlePostGenerated} />;
@@ -178,6 +185,8 @@ export default function App() {
         return <StartupFeed onPostGenerated={handlePostGenerated} />;
       case 'opensource':
         return <OpenSourceFeed onPostGenerated={handlePostGenerated} />;
+      case 'business_oss':
+        return <BusinessOssFeed onPostGenerated={handlePostGenerated} />;
       case 'ai_enterprise':
         return <AiEnterpriseFeed onPostGenerated={handlePostGenerated} />;
       case 'generated':

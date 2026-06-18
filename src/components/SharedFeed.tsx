@@ -4,7 +4,7 @@ import { geminiService } from '../services/geminiService';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { RefreshCw, Sparkles, ExternalLink, Loader2, Bookmark, Clock } from 'lucide-react';
+import { RefreshCw, Sparkles, ExternalLink, Loader2, Bookmark, Clock, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
@@ -157,6 +157,17 @@ export function SharedFeed({
     }
   };
 
+  const handleShare = async (item: NewsItem) => {
+    try {
+      const shareText = `"${item.title}" from ${item.source}\n${item.url}`;
+      await navigator.clipboard.writeText(shareText);
+      toast.success("Link copied to clipboard!");
+    } catch (error) {
+      toast.error("Failed to copy link");
+      console.error('Error copying to clipboard:', error);
+    }
+  };
+
   const visibleNews = news.slice(0, visibleCount);
 
   const isToday = (dateString: string) => {
@@ -229,11 +240,20 @@ export function SharedFeed({
                     <Clock className="w-4 h-4" />
                   )}
                 </Button>
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  onClick={() => handleShare(item)}
+                  title="Share to Clipboard"
+                >
+                  <Share2 className="w-4 h-4" />
+                </Button>
                 <a 
                   href={item.url} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className={buttonVariants({ variant: "outline", size: "icon" })}
+                  title="Open Link"
                 >
                   <ExternalLink className="w-4 h-4" />
                 </a>

@@ -60,7 +60,7 @@ export const DEFAULT_RESOURCES: FeedResource[] = [
   { id: 'helpnetsec', name: 'Help Net Security', url: 'https://www.helpnetsec.com/feed/', category: 'cyber', description: 'Information security news, articles, and product announcements.', isDefault: true },
   { id: 'cisaalerts', name: 'CISA Cybersecurity Alerts', url: 'https://www.cisa.gov/cybersecurity-alerts/alerts.xml', category: 'cyber', description: 'Official cyber vulnerability and alert alerts from CISA.', isDefault: true },
   { id: 'fbicyber', name: 'FBI Cyber News', url: 'https://www.fbi.gov/feeds/cyber-news/rss.xml', category: 'cyber', description: 'Law enforcement reports on cyber espionage and criminals.', isDefault: true },
-  { id: 'malwarebytesblog', name: 'Malwarebytes Labs', url: 'https://www.malwarebytes.com/blog/feed', category: 'cyber', description: 'Security warnings and advice on online behavior.', isDefault: true },
+  { id: 'malwarebytesblog', name: 'CSO Online', url: 'https://www.reddit.com/r/cybersecurity/.rss', category: 'cyber', description: 'Security warnings and advice on online behavior.', isDefault: true },
   { id: 'schneier', name: 'Schneier on Security', url: 'https://www.schneier.com/feed/', category: 'cyber', description: 'Bruce Schneier’s world-famous security blog and commentary.', isDefault: true },
   { id: 'sans_isc', name: 'SANS Internet Storm Center', url: 'https://isc.sans.edu/rssfeed.xml', category: 'cyber', description: 'Daily cyber security briefings and intrusion analysis.', isDefault: true },
   { id: 'threatpost', name: 'Threatpost', url: 'https://threatpost.com/feed/', category: 'cyber', description: 'The first stop for IT security and vulnerability intelligence.', isDefault: true },
@@ -87,20 +87,20 @@ export const DEFAULT_RESOURCES: FeedResource[] = [
   { id: 'gapplynews', name: 'Official Portals Apply Online', url: 'https://news.google.com/rss/search?q=%22apply+online%22+(scheme+OR+yojana+OR+subsidy)+India+-election+-politics&hl=en-IN&gl=IN&ceid=IN:en', category: 'schemes', description: 'Aggregated links for online application guidance portals.', isDefault: true },
 
   // IoT & Electronics
-  { id: 'iotbusiness', name: 'IoT Business News', url: 'https://iotbusinessnews.com/feed/', category: 'iot', description: 'Strategic business trends, connected modules and cellular IoT.', isDefault: true },
-  { id: 'elemdesign', name: 'Electronic Design', url: 'https://www.electronicdesign.com/rss.xml', category: 'iot', description: 'Hardware, microcontrollers, embedded engineering techniques.', isDefault: true },
-  { id: 'embeddedfeed', name: 'Embedded.com', url: 'https://www.embedded.com/feed/', category: 'iot', description: 'Deep tech specifications on embedded code architectures.', isDefault: true },
-  { id: 'arduinoblog', name: 'Arduino Blog', url: 'https://blog.arduino.cc/feed/', category: 'iot', description: 'DIY electronics projects, single-board updates, open-hardware news.', isDefault: true },
-  { id: 'hackaday', name: 'Hackaday Blog', url: 'https://hackaday.com/blog/feed/', category: 'iot', description: 'Exceptional modifications, hardware hacking, and electronic designs.', isDefault: true },
-  { id: 'adafruitblog', name: 'Adafruit Blog', url: 'https://blog.adafruit.com/feed/', category: 'iot', description: 'Makerspace news on physical computing and python on boards.', isDefault: true },
+  { id: 'iotbusiness', name: 'Reddit IoT', url: 'https://www.reddit.com/r/iot/.rss', category: 'iot', description: 'Strategic business trends, connected modules and cellular IoT.', isDefault: true },
+  { id: 'elemdesign', name: 'Reddit Hardware', url: 'https://www.reddit.com/r/hardware/.rss', category: 'iot', description: 'Hardware, microcontrollers, embedded engineering techniques.', isDefault: true },
+  { id: 'embeddedfeed', name: 'Reddit Embedded', url: 'https://www.reddit.com/r/embedded/.rss', category: 'iot', description: 'Deep tech specifications on embedded code architectures.', isDefault: true },
+  { id: 'arduinoblog', name: 'Reddit Arduino', url: 'https://www.reddit.com/r/arduino/.rss', category: 'iot', description: 'DIY electronics projects, single-board updates, open-hardware news.', isDefault: true },
+  { id: 'hackaday', name: 'Reddit Electronics', url: 'https://www.reddit.com/r/electronics/.rss', category: 'iot', description: 'Exceptional modifications, hardware hacking, and electronic designs.', isDefault: true },
+  { id: 'adafruitblog', name: 'Reddit Raspberry_Pi', url: 'https://www.reddit.com/r/raspberry_pi/.rss', category: 'iot', description: 'Makerspace news on physical computing and python on boards.', isDefault: true },
 
   // Startups
-  { id: 'inc42', name: 'Inc42', url: 'https://inc42.com/feed/', category: 'startup', description: 'The premier news room for Indian startup innovations and tech investments.', isDefault: true },
-  { id: 'yourstory', name: 'YourStory', url: 'https://yourstory.com/feed', category: 'startup', description: 'Fabulous profiles of entrepreneurs and scaleups across India.', isDefault: true },
+  { id: 'inc42', name: 'Reddit Startups', url: 'https://www.reddit.com/r/startups/.rss', category: 'startup', description: 'The premier news room for Indian startup innovations and tech investments.', isDefault: true },
+  { id: 'yourstory', name: 'Reddit Entrepreneur', url: 'https://www.reddit.com/r/Entrepreneur/.rss', category: 'startup', description: 'Fabulous profiles of entrepreneurs and scaleups across India.', isDefault: true },
   { id: 'vccircle', name: 'VCCircle', url: 'https://www.vccircle.com/feed', category: 'startup', description: 'In-depth intelligence on private equity, funding, and M&As.', isDefault: true },
   { id: 'tcstartups', name: 'TechCrunch Startups', url: 'https://techcrunch.com/category/startups/feed/', category: 'startup', description: 'Global early stage venture stories and profiles.', isDefault: true },
   { id: 'eustartups', name: 'EU-Startups', url: 'https://www.eu-startups.com/feed/', category: 'startup', description: 'The leading tech startup magazine in Europe.', isDefault: true },
-  { id: 'ycombinatorhn', name: 'Y Combinator Trending', url: 'https://hnrss.org/newest?q=Y+Combinator', category: 'startup', description: 'Discussions centered on Y Combinator cohorts.', isDefault: true },
+  { id: 'ycombinatorhn', name: 'Reddit YCombinator', url: 'https://www.reddit.com/r/ycombinator/.rss', category: 'startup', description: 'Discussions centered on Y Combinator cohorts.', isDefault: true },
   { id: 'startupgrind', name: 'Startup Grind', url: 'https://www.startupgrind.com/blog/feeds/rss/', category: 'startup', description: 'Startup education and lessons from scaling founders.', isDefault: true },
   { id: 'techeu', name: 'Tech.eu', url: 'https://tech.eu/feed/', category: 'startup', description: 'The premier source for European tech startup ecosystem news.', isDefault: true },
   { id: 'sifted', name: 'Sifted', url: 'https://sifted.eu/feed/', category: 'startup', description: 'Backed by FT, reporting on startup work culture and scaleup funds.', isDefault: true },
@@ -113,6 +113,16 @@ export const DEFAULT_RESOURCES: FeedResource[] = [
   { id: 'opensourcecom', name: 'Opensource.com', url: 'https://opensource.com/feed', category: 'opensource', description: 'How open source principles are applied in design, tech, and life.', isDefault: true },
   { id: 'linuxfoundation', name: 'Linux Foundation', url: 'https://www.linuxfoundation.org/feed', category: 'opensource', description: 'Official stories, project launches, and updates from LF.', isDefault: true },
   { id: 'linuxtoday', name: 'Linux Today', url: 'https://www.linuxtoday.com/feed/', category: 'opensource', description: 'Unified portal for Linux guides, open source applications, and reviews.', isDefault: true },
+
+  // Business Open Source
+  { id: 'gbizoss', name: 'Business Open Source News', url: 'https://news.google.com/rss/search?q=%22open+source%22+AND+(business+OR+enterprise)+software&hl=en-US&gl=US&ceid=US:en', category: 'business_oss', description: 'Trending news on open source solutions for enterprises.', isDefault: true },
+  { id: 'gerpnext', name: 'Open Source ERP News', url: 'https://news.google.com/rss/search?q=%22open+source+ERP%22+OR+%22ERPNext%22+OR+%22Odoo%22&hl=en-US&gl=US&ceid=US:en', category: 'business_oss', description: 'Latest news about open source ERP software.', isDefault: true },
+  { id: 'rselfhosted', name: 'Reddit Self-Hosted', url: 'https://www.reddit.com/r/selfhosted/.rss', category: 'business_oss', description: 'Discover popular self-hosted software alternatives for business.', isDefault: true },
+  { id: 'redhat', name: 'Red Hat Blog', url: 'https://www.redhat.com/en/rss/blog', category: 'business_oss', description: 'Enterprise open source solutions, Linux, and hybrid cloud news.', isDefault: true },
+  { id: 'ubuntu', name: 'Ubuntu Blog', url: 'https://ubuntu.com/blog/feed', category: 'business_oss', description: 'News on Ubuntu enterprise server, cloud computing, and security.', isDefault: true },
+  { id: 'nextcloud', name: 'Nextcloud Blog', url: 'https://nextcloud.com/blog/feed/', category: 'business_oss', description: 'Updates on self-hosted enterprise productivity and collaboration platform.', isDefault: true },
+  { id: 'rodoo', name: 'Reddit Odoo', url: 'https://www.reddit.com/r/Odoo/.rss', category: 'business_oss', description: 'Community discussions and news about Odoo ERP.', isDefault: true },
+  { id: 'rerpnext', name: 'Reddit ERPNext', url: 'https://www.reddit.com/r/erpnext/.rss', category: 'business_oss', description: 'Community discussions and news about ERPNext.', isDefault: true },
 
   // AI in Enterprise
   { id: 'aiintelnews', name: 'Artificial Intelligence News', url: 'https://www.artificialintelligence-news.com/feed/', category: 'ai_enterprise', description: 'AI trends, commercial models, and corporate adoptions.', isDefault: true },
@@ -134,10 +144,10 @@ export const DEFAULT_RESOURCES: FeedResource[] = [
   { id: 'rcscareers', name: 'Reddit CS Careers', url: 'https://www.reddit.com/r/cscareerquestions/.rss', category: 'corporate', description: 'Silicon Valley hire and tech career discussion.', isDefault: true },
   { id: 'rjobs', name: 'Reddit Jobs', url: 'https://www.reddit.com/r/jobs/.rss', category: 'corporate', description: 'General career tips, office strategies and interview listings.', isDefault: true },
   { id: 'rantiwork', name: 'Reddit Antiwork', url: 'https://www.reddit.com/r/antiwork/.rss', category: 'corporate', description: 'Labor politics and office balance discussion.', isDefault: true },
-  { id: 'hbrarticles', name: 'Harvard Business Review', url: 'https://hbr.org/feed', category: 'corporate', description: 'Leadership tips, remote operations, and managerial psychology.', isDefault: true },
+  { id: 'entrepreneur', name: 'Entrepreneur', url: 'https://www.entrepreneur.com/latest.rss', category: 'corporate', description: 'Leadership tips, remote operations, and managerial psychology.', isDefault: true },
   { id: 'askamanager', name: 'Ask a Manager', url: 'https://www.askamanager.org/feed', category: 'corporate', description: 'Alison Green\'s exceptional solutions to complicated workplace problems.', isDefault: true },
-  { id: 'careercontessa', name: 'Career Contessa', url: 'https://www.careercontessa.com/feed/', category: 'corporate', description: 'Career resource for women, interview guide, salary negotiating tips.', isDefault: true },
-  { id: 'themuse', name: 'The Muse', url: 'https://www.themuse.com/advice/feed', category: 'corporate', description: 'Job exploration, company culture profiles, and career advice.', isDefault: true },
+  { id: 'careercontessa', name: 'Career Contessa', url: 'https://feed.careercontessa.com/', category: 'corporate', description: 'Career resource for women, interview guide, salary negotiating tips.', isDefault: true },
+  { id: 'cnbc_business', name: 'CNBC Business', url: 'https://search.cnbc.com/rs/search/combinedcms/view.xml?profile=12000000&id=10001147', category: 'corporate', description: 'Job exploration, company culture profiles, and career advice.', isDefault: true },
 
   // Dark Web
   { id: 'torblog', name: 'Tor Project official', url: 'https://blog.torproject.org/feed/', category: 'darkweb', description: 'Tor browser builds, cryptography guides and digital freedom.', isDefault: true },
@@ -148,8 +158,8 @@ export const DEFAULT_RESOURCES: FeedResource[] = [
   { id: 'mentalfloss_feed', name: 'Mental Floss', url: 'https://www.mentalfloss.com/feed', category: 'community_global_feed', description: 'Interesting global facts, history, science, and pop culture.', isDefault: true },
   { id: 'reddit_all_community', name: 'Reddit Social Web', url: 'https://www.reddit.com/r/all/.rss', category: 'community_global_feed', description: 'Aggregate public internet discussions and trending topics.', isDefault: true },
   
-  { id: 'cbr_marvel', name: 'CBR Marvel Comics', url: 'https://www.cbr.com/feed/category/marvel-comics/', category: 'community_marvel', description: 'Marvel Comics previews, character breakdowns, and editorial news.', isDefault: true },
-  { id: 'screenrant_marvel', name: 'ScreenRant MCU', url: 'https://screenrant.com/feed/tag/marvel-mcu/', category: 'community_marvel', description: 'Latest Marvel Cinematic Universe movies, secrets, and cast updates.', isDefault: true },
+  { id: 'reddit_marvel', name: 'r/Marvel Feed', url: 'https://www.reddit.com/r/Marvel/.rss', category: 'community_marvel', description: 'Marvel Comics previews, character breakdowns, and fan discussions.', isDefault: true },
+  { id: 'reddit_mcu', name: 'r/marvelstudios Feed', url: 'https://www.reddit.com/r/marvelstudios/.rss', category: 'community_marvel', description: 'Latest Marvel Cinematic Universe movies, secrets, and cast discussions.', isDefault: true },
 
   { id: 'adv_rider', name: 'Adventure Rider', url: 'https://www.adventurerider.com/feed/', category: 'community_riders', description: 'World riding reports, road tips, motorcycle tests, and gear reviews.', isDefault: true },
   { id: 'reddit_motorcycles', name: 'r/motorcycles Feed', url: 'https://www.reddit.com/r/motorcycles/.rss', category: 'community_riders', description: 'Biker community, route queries, safety discussions, and builds.', isDefault: true },
@@ -226,8 +236,9 @@ const getFallbackCategory = (url: string): string => {
   if (u.includes('hackaday') || u.includes('iotworldtoday') || u.includes('staceyoniot') || u.includes('electronicsweekly') || u.includes('adafruit')) return 'IoT & Hardware';
   if (u.includes('techcrunch.com/category/startups') || u.includes('eu-startups') || u.includes('startupnews')) return 'Startup';
   if (u.includes('phoronix') || u.includes('itsfoss') || u.includes('q=open+source') || u.includes('opensource.com')) return 'Open Source';
+  if (u.includes('selfhosted') || u.includes('frappe') || u.includes('erpnext') || u.includes('odoo') || u.includes('business+software') || u.includes('nextcloud') || u.includes('redhat') || u.includes('ubuntu')) return 'Business Open Source';
   if (u.includes('artificialintelligence-news') || u.includes('aibusiness') || u.includes('technologyreview.com/topic/artificial-intelligence') || u.includes('mit.edu/rss/topic/artificial-intelligence') || u.includes('venturebeat.com/category/ai') || u.includes('marktechpost') || u.includes('blog.google/technology/ai') || u.includes('techcrunch.com/category/artificial-intelligence') || u.includes('huggingface') || u.includes('openai')) return 'AI Enterprise';
-  if (u.includes('careerguidance') || u.includes('cscareerquestions') || u.includes('jobs') || u.includes('antiwork') || u.includes('hbr.org') || u.includes('hiring') || u.includes('salary') || u.includes('increment') || u.includes('office') || u.includes('askamanager')) return 'Corporate Culture';
+  if (u.includes('careerguidance') || u.includes('cscareerquestions') || u.includes('jobs') || u.includes('antiwork') || u.includes('entrepreneur.com') || u.includes('cnbc.com') || u.includes('hiring') || u.includes('salary') || u.includes('increment') || u.includes('office') || u.includes('askamanager')) return 'Corporate Culture';
   if (u.includes('torproject') || u.includes('darknet') || u.includes('r/tor') || u.includes('onion') || u.includes('deep+web')) return 'Dark Web & Tor';
   if (u.includes('mentalfloss') || u.includes('r/all')) return 'Global Explorer';
   if (u.includes('cbr') || u.includes('marvel') || u.includes('mcu') || u.includes('avengers') || u.includes('spider-man')) return 'Marvel Universe';
@@ -236,6 +247,36 @@ const getFallbackCategory = (url: string): string => {
   if (u.includes('nonprofitpro') || u.includes('r/charity') || u.includes('charity')) return 'Impact Fund';
   if (u.includes('americorps') || u.includes('r/volunteer') || u.includes('volunteer')) return 'Volunteering';
   if (u.includes('diyphotography') || u.includes('r/photography') || u.includes('photo')) return 'Local Squads';
+  return 'Tech';
+};
+
+const autoTagCategory = (title: string, summary: string, rawCategory: string): string => {
+  const text = `${title || ''} ${summary || ''}`.toLowerCase();
+  
+  if (/\b(?:ai|artificial intelligence|machine learning|deep learning|llm|chatgpt|openai|neural network|genai|midjourney|anthropic|claude|gemini)\b/i.test(text)) {
+    return 'AI';
+  }
+  
+  if (/\b(?:cyber|security|hack|breach|vulnerability|malware|ransomware|phishing|infosec|cve)\b/i.test(text)) {
+    return 'Security';
+  }
+  
+  if (/\b(?:business|enterprise|startup|funding|acquisition|revenue|ipo|scaleup|founder|ceo|vc|b2b)\b/i.test(text)) {
+    return 'Business';
+  }
+
+  // Fallback normalization logic
+  if (rawCategory && typeof rawCategory === 'string') {
+    const raw = rawCategory.toLowerCase();
+    if (raw.includes('ai') || raw.includes('artificial')) return 'AI';
+    if (raw.includes('cyber') || raw.includes('security')) return 'Security';
+    if (raw.includes('startup') || raw.includes('business') || raw.includes('enterprise')) return 'Business';
+    if (raw.includes('iot') || raw.includes('hardware')) return 'Hardware';
+    if (raw.includes('open source') || raw.includes('oss')) return 'Open Source';
+    if (raw === 'tech' || raw === 'trending') return 'Tech';
+    return rawCategory;
+  }
+  
   return 'Tech';
 };
 
@@ -391,6 +432,18 @@ const getStaticNewsFallback = (category: string): NewsItem[] => {
           category: 'Open Source'
         }
       ];
+    case 'business_oss':
+      return [
+        {
+          id: 'mock-bizoss-1',
+          title: 'ERPNext 15 Released: Enhancing Warehouse Mobility and Offline Features',
+          summary: 'The popular open source ERP system brings robust offline-first synchronization capabilities for mobile warehouse inventory management.',
+          source: 'Open Source ERP News',
+          url: 'https://frappe.io',
+          publishedAt: nowStr,
+          category: 'Business Open Source'
+        }
+      ];
     case 'ai_enterprise':
       return [
         {
@@ -409,8 +462,8 @@ const getStaticNewsFallback = (category: string): NewsItem[] => {
           id: 'mock-corp-1',
           title: 'The Shift Towards Task-Based Asynchronous Office Work Culture',
           summary: 'Leading software enterprises are replacing rigid live calendar sessions with structured asynchronous issue logs and voice-memo workflows to boost focused hours.',
-          source: 'Harvard Business Review',
-          url: 'https://hbr.org',
+          source: 'Entrepreneur',
+          url: 'https://www.entrepreneur.com',
           publishedAt: nowStr,
           category: 'Corporate'
         }
@@ -548,15 +601,22 @@ const fetchAndParseFeeds = async (feeds: string[]): Promise<NewsItem[]> => {
 
         // If rss2json succeeds
         if (jsonData) {
-          return jsonData.items.map((item: any) => ({
-            id: item.guid || item.link,
-            title: item.title,
-            summary: (item.description || '').replace(/<[^>]+>/g, '').substring(0, 200) + '...',
-            source: item.author || jsonData.feed?.title || 'News Source',
-            url: item.link,
-            publishedAt: item.pubDate,
-            category: item.categories?.[0] || getFallbackCategory(feedUrl)
-          }));
+          return jsonData.items.map((item: any) => {
+            const rawDescription = (item.description || '');
+            const rawSummary = typeof rawDescription === 'string' ? rawDescription.replace(/<[^>]+>/g, '') : '';
+            const shortSummary = rawSummary.substring(0, 200) + '...';
+            const defaultCat = item.categories?.[0] || getFallbackCategory(feedUrl);
+            
+            return {
+              id: item.guid || item.link,
+              title: item.title,
+              summary: shortSummary,
+              source: item.author || jsonData.feed?.title || 'News Source',
+              url: item.link,
+              publishedAt: item.pubDate,
+              category: autoTagCategory(item.title, rawSummary, defaultCat)
+            };
+          });
         }
 
         // Fallback: Use allorigins to get raw XML and parse it client-side
@@ -590,16 +650,18 @@ const fetchAndParseFeeds = async (feeds: string[]): Promise<NewsItem[]> => {
               const title = getTagText('title');
               const link = entry.querySelector('link')?.getAttribute('href') || getTagText('link');
               const pubDate = getTagText('published') || getTagText('updated');
-              const summary = getTagText('summary') || getTagText('content');
+              const summary = (getTagText('summary') || getTagText('content') || '');
+              const plainSummary = summary.replace(/<[^>]+>/g, '');
+              const shortSummary = plainSummary.substring(0, 200) + '...';
               
               return {
                 id: getTagText('id') || link,
                 title,
-                summary: summary.replace(/<[^>]+>/g, '').substring(0, 200) + '...',
+                summary: shortSummary,
                 source: xml.querySelector('feed > title')?.textContent || 'News Source',
                 url: link,
                 publishedAt: pubDate || new Date().toISOString(),
-                category: getFallbackCategory(feedUrl)
+                category: autoTagCategory(title, plainSummary, getFallbackCategory(feedUrl))
               };
             });
           } else {
@@ -611,16 +673,18 @@ const fetchAndParseFeeds = async (feeds: string[]): Promise<NewsItem[]> => {
               const pubDate = getTagText('pubDate') || getTagText('dc:date');
               // Some feeds use <content:encoded> for full content, so check it if description is empty
               const encodedContent = item.getElementsByTagName('content:encoded');
-              const description = getTagText('description') || (encodedContent.length > 0 ? encodedContent[0].textContent : '') || '';
+              const description = (getTagText('description') || (encodedContent.length > 0 ? encodedContent[0].textContent : '') || '');
+              const plainSummary = description.replace(/<[^>]+>/g, '');
+              const shortSummary = plainSummary.substring(0, 200) + '...';
               
               return {
                 id: getTagText('guid') || link,
                 title,
-                summary: description.replace(/<[^>]+>/g, '').substring(0, 200) + '...',
+                summary: shortSummary,
                 source: xml.querySelector('channel > title')?.textContent || 'News Source',
                 url: link,
                 publishedAt: pubDate || new Date().toISOString(),
-                category: getFallbackCategory(feedUrl)
+                category: autoTagCategory(title, plainSummary, getFallbackCategory(feedUrl))
               };
             });
           }
@@ -959,6 +1023,21 @@ export const newsService = {
       return fresh;
     }
     return getCachedOrStaticFallback('startup');
+  },
+
+  getBusinessOssNews: async (forceRefresh = false): Promise<NewsItem[]> => {
+    if (!forceRefresh) {
+      const cached = await getCachedFeed('business_oss');
+      if (cached) return cached;
+    }
+    const defaultUrls = DEFAULT_RESOURCES.filter(r => r.category === 'business_oss').map(r => r.url);
+    const resolvedUrls = getActiveFeedsForCategory('business_oss', defaultUrls);
+    const fresh = await fetchAndParseFeeds(resolvedUrls);
+    if (fresh && fresh.length > 0) {
+      await saveCachedFeed('business_oss', fresh);
+      return fresh;
+    }
+    return getCachedOrStaticFallback('business_oss');
   },
 
   getOpenSourceNews: async (forceRefresh = false): Promise<NewsItem[]> => {

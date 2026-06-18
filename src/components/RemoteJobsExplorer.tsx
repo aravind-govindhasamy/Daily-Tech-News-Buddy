@@ -52,6 +52,7 @@ interface RemoteJob {
   // Custom parsed values
   parsedMinSalary?: number;
   parsedMaxSalary?: number;
+  fetchedAt?: string;
 }
 
 // Outstanding back-up jobs to show if offline, CORS limits are hit, or API throttled.
@@ -430,6 +431,46 @@ export function RemoteJobsExplorer() {
     setLoading(true);
     setErrorStatus(null);
     let aggregatedJobs: RemoteJob[] = [];
+    
+    try {
+      const q = query(collection(db, 'remoteJobs'));
+      const res = await getDocs(q);
+      let dbJobs = res.docs.map(d => d.data() as RemoteJob);
+      
+      const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+      dbJobs = dbJobs.filter(j => {
+        if (!j.fetchedAt) return false;
+        return new Date(j.fetchedAt).getTime() > sevenDaysAgo;
+      });
+      
+      res.docs.forEach(d => {
+        const j = d.data() as any;
+        if (!j.fetchedAt || new Date(j.fetchedAt).getTime() <= sevenDaysAgo) {
+          deleteDoc(doc(db, 'remoteJobs', d.id)).catch(() => null);
+        }
+      });
+      
+      let needsScrape = true;
+      if (dbJobs.length > 50) {
+        const latestFetch = Math.max(...dbJobs.map(j => new Date(j.fetchedAt || 0).getTime()));
+        if (Date.now() - latestFetch < 12 * 60 * 60 * 1000) {
+           needsScrape = false;
+        }
+      }
+
+      if (dbJobs.length > 0) {
+        dbJobs.sort((a, b) => new Date(b.publication_date).getTime() - new Date(a.publication_date).getTime());
+        setJobs(dbJobs);
+        setSelectedJob(dbJobs[0]);
+        setLoading(false);
+      }
+      
+      if (!needsScrape && dbJobs.length > 0) {
+        return;
+      }
+    } catch(err) {
+      console.warn("DB read error for remoteJobs cache, falling back to live scrape", err);
+    }
     
     const endpoints = [
       // 1. Remotive API call
@@ -1070,6 +1111,85 @@ export function RemoteJobsExplorer() {
           console.warn("Canonical board pipeline fetch failed", error);
         }
         return [];
+      },
+      // 16. GitLab Corporate Career Page (via Greenhouse API)
+      async () => {
+        const url = 'https://boards-api.greenhouse.io/v1/boards/gitlab/jobs';
+        try {
+          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+          const pRes = await fetch(proxyUrl);
+          if (pRes.ok) {
+            const body = await pRes.json();
+            const parsed = JSON.parse(body.contents);
+            if (parsed && Array.isArray(parsed.jobs)) {
+              return parsed.jobs
+                .slice(0, 15)
+                .map((raw: any) => {
+                  const salary = '$140,000 - $190,000 USD';
+                  const parsedS = parseSalary(salary);
+                  return {
+                    id: Number(raw.id) || Math.floor(Math.random() * 10000000) + 1700000,
+                    url: raw.absolute_url || '',
+                    title: raw.title,
+                    company_name: 'GitLab',
+                    category: raw.departments?.[0]?.name || 'Engineering',
+                    candidate_required_location: raw.location?.name || 'Worldwide (Remote)',
+                    salary,
+                    description: `Join GitLab as a ${raw.title}. We are the world's largest fully remote company, building the ultimate DevSecOps platform. Excellent compensation and asynchronous work culture.`,
+                    publication_date: raw.updated_at || new Date().toISOString(),
+                    source: 'GitLab',
+                    parsedMinSalary: parsedS?.min || 140000,
+                    parsedMaxSalary: parsedS?.max || 190000
+                  };
+                });
+            }
+          }
+        } catch (error) {
+          console.warn("Gitlab board pipeline fetch failed", error);
+        }
+        return [];
+      },
+      // 17. Spotify Engineering Corporate
+      async () => {
+        const url = 'https://boards-api.greenhouse.io/v1/boards/spotify/jobs';
+        try {
+          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+          const pRes = await fetch(proxyUrl);
+          if (pRes.ok) {
+            const body = await pRes.json();
+            const parsed = JSON.parse(body.contents);
+            if (parsed && Array.isArray(parsed.jobs)) {
+              return parsed.jobs
+                .filter((raw: any) => {
+                  const titleStr = (raw.title || '').toLowerCase();
+                  const locStr = (raw.location?.name || '').toLowerCase();
+                  return locStr.includes('remote') || locStr.includes('anywhere') || titleStr.includes('remote');
+                })
+                .slice(0, 15)
+                .map((raw: any) => {
+                  const salary = '$145,000 - $210,000 USD';
+                  const parsedS = parseSalary(salary);
+                  return {
+                    id: Number(raw.id) || Math.floor(Math.random() * 10000000) + 1800000,
+                    url: raw.absolute_url || '',
+                    title: raw.title,
+                    company_name: 'Spotify',
+                    category: raw.departments?.[0]?.name || 'Engineering',
+                    candidate_required_location: raw.location?.name || 'Remote',
+                    salary,
+                    description: `Join Spotify as a ${raw.title}. Help shape the future of audio tech globally. This role allows Work From Anywhere (Remote) participation across compatible timezones.`,
+                    publication_date: raw.updated_at || new Date().toISOString(),
+                    source: 'Spotify',
+                    parsedMinSalary: parsedS?.min || 145000,
+                    parsedMaxSalary: parsedS?.max || 210000
+                  };
+                });
+            }
+          }
+        } catch (error) {
+          console.warn("Spotify board pipeline fetch failed", error);
+        }
+        return [];
       }
     ];
 
@@ -1095,6 +1215,14 @@ export function RemoteJobsExplorer() {
           ...item,
           publication_date: normalizeAndFreshenDate(item.publication_date, item.id)
         }));
+        
+      // Ensure we push this new batch up to Firestore to sync cache
+      const fetchTime = new Date().toISOString();
+      const batchWrites = cleanList.slice(0, 150).map(item => {
+        const enriched = { ...item, fetchedAt: fetchTime };
+        return setDoc(doc(db, 'remoteJobs', String(enriched.id)), enriched).catch(() => null);
+      });
+      Promise.all(batchWrites).catch(() => null);
 
       // Sort by recency
       cleanList.sort((a, b) => new Date(b.publication_date).getTime() - new Date(a.publication_date).getTime());

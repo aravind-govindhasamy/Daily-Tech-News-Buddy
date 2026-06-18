@@ -72,6 +72,17 @@ service cloud.firestore {
              data.createdAt is string && data.createdAt.size() <= 64;
     }
 
+    function isValidRemoteJob(data) {
+      return data.keys().hasAll(['id', 'url', 'title', 'company_name', 'category', 'salary', 'fetchedAt']) &&
+             (data.id is number || data.id is string) &&
+             data.url is string && data.url.size() <= 1000 &&
+             data.title is string && data.title.size() <= 500 &&
+             data.company_name is string && data.company_name.size() <= 500 &&
+             data.category is string && data.category.size() <= 200 &&
+             data.salary is string && data.salary.size() <= 200 &&
+             data.fetchedAt is string && data.fetchedAt.size() <= 64;
+    }
+
     match /savedPosts/{postId} {
       allow read: if isOwner(existing().userId);
       allow create: if isSignedIn() && isValidId(postId) && isValidSavedPost(incoming());
@@ -106,6 +117,11 @@ service cloud.firestore {
     match /cachedFeeds/{categoryId} {
       allow read: if true;
       allow create, update: if isSignedIn() && isValidId(categoryId) && isValidCachedFeed(incoming());
+    }
+
+    match /remoteJobs/{jobId} {
+      allow read: if true;
+      allow create, update: if isSignedIn() && isValidId(jobId) && isValidRemoteJob(incoming());
     }
   }
 }

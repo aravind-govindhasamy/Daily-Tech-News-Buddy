@@ -138,6 +138,57 @@
         }
       },
       "required": ["userId", "feedId", "name", "url", "category", "createdAt"]
+    },
+    "remoteJob": {
+      "type": "object",
+      "title": "Remote Job Cache",
+      "description": "Global remote jobs cached from various sites.",
+      "properties": {
+        "id": {
+          "type": "number",
+          "description": "Job ID"
+        },
+        "url": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "company_name": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "candidate_required_location": {
+          "type": "string"
+        },
+        "salary": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "publication_date": {
+          "type": "string"
+        },
+        "logoUrl": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "parsedMinSalary": {
+          "type": "number"
+        },
+        "parsedMaxSalary": {
+          "type": "number"
+        },
+        "fetchedAt": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "url", "title", "company_name", "category", "salary"]
     }
   },
   "firestore": {
@@ -160,6 +211,10 @@
     "/customFeeds/{feedId}": {
       "schema": "customFeed",
       "description": "User-configured custom RSS news sources"
+    },
+    "/remoteJobs/{jobId}": {
+      "schema": "remoteJob",
+      "description": "Globally cached remote job listings"
     }
   }
 }
