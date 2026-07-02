@@ -160,8 +160,12 @@ export function SharedFeed({
   const handleShare = async (item: NewsItem) => {
     try {
       const shareText = `"${item.title}" from ${item.source}\n${item.url}`;
-      await navigator.clipboard.writeText(shareText);
-      toast.success("Link copied to clipboard!");
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(shareText);
+        toast.success("Link copied to clipboard!");
+      } else {
+        throw new Error("Clipboard API not available");
+      }
     } catch (error) {
       toast.error("Failed to copy link");
       console.error('Error copying to clipboard:', error);

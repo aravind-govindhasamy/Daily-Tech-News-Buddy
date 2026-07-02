@@ -1,5 +1,5 @@
-const CACHE_NAME = 'techbuddy-assets-v1';
-const DYNAMIC_CACHE_NAME = 'techbuddy-dynamic-v1';
+const CACHE_NAME = 'techbuddy-assets-v2';
+const DYNAMIC_CACHE_NAME = 'techbuddy-dynamic-v2';
 
 // Assets to pre-cache immediately
 const PRECACHE_ASSETS = [
@@ -84,7 +84,27 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Strategy 2: Stale-While-Revalidate for application assets (Same-origin index, bundle JS and CSS files)
+  // Strategy 2: Network-First for HTML navigation requests to prevent stale chunk 404s
+  if (request.mode === 'navigate' || request.headers.get('accept').includes('text/html')) {
+    event.respondWith(
+      fetch(request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, responseToCache);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return caches.match(request);
+        })
+    );
+    return;
+  }
+
+  // Strategy 3: Stale-While-Revalidate for application assets (Same-origin bundle JS and CSS files)
   if (url.origin === self.location.origin) {
     event.respondWith(
       caches.match(request).then((cachedResponse) => {
@@ -107,3 +127,4 @@ self.addEventListener('fetch', (event) => {
     );
   }
 });
+

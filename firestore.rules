@@ -26,19 +26,23 @@ service cloud.firestore {
     }
 
     function isValidSavedPost(data) {
-      return data.keys().hasAll(['userId', 'newsId', 'title', 'createdAt']) &&
+      return data.keys().hasAll(['userId', 'newsId', 'title', 'url', 'source', 'createdAt']) &&
              data.userId is string && data.userId == request.auth.uid &&
              data.newsId is string && data.newsId.size() > 0 && data.newsId.size() <= 200 &&
              data.title is string && data.title.size() > 0 && data.title.size() <= 500 &&
-             data.createdAt == request.time;
+             data.url is string && data.url.size() > 0 && data.url.size() <= 1000 &&
+             data.source is string && data.source.size() > 0 && data.source.size() <= 200 &&
+             data.createdAt is string && data.createdAt.size() <= 64;
     }
 
     function isValidReadLaterPost(data) {
-      return data.keys().hasAll(['userId', 'newsId', 'title', 'createdAt']) &&
+      return data.keys().hasAll(['userId', 'newsId', 'title', 'url', 'source', 'createdAt']) &&
              data.userId is string && data.userId == request.auth.uid &&
              data.newsId is string && data.newsId.size() > 0 && data.newsId.size() <= 200 &&
              data.title is string && data.title.size() > 0 && data.title.size() <= 500 &&
-             data.createdAt == request.time;
+             data.url is string && data.url.size() > 0 && data.url.size() <= 1000 &&
+             data.source is string && data.source.size() > 0 && data.source.size() <= 200 &&
+             data.createdAt is string && data.createdAt.size() <= 64;
     }
 
     function isValidSavedJob(data) {
